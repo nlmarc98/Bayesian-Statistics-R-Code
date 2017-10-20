@@ -62,9 +62,9 @@ prior2=beta_pdf(theta, a = a2, b = b2)
 
 par(mfrow=c(2,3))
 plot(theta, prior1, type='l')
-title('Prior 1 (k=8, b=12)')
+title('Prior 1')
 plot(theta, prior2, type='l')
-title('Prior 2 (k=8, b=12)')
+title('Prior 2 ')
 
 
 likelihood=bernoulli_pdf(theta, z = k, N = N)
@@ -72,15 +72,14 @@ posterior1=beta_pdf(theta, a = k + a1, b = N - k + b1) # Easy posterior, because
 posterior2=beta_pdf(theta, a = k + a2, b = N - k + b2) # Easy posterior, because conjugacy
 
 plot(theta, likelihood, type='l')
-title('Likelihood (z=8, N=12)')
+title('Likelihood ')
 plot(theta, posterior1, type='l')
-title('Posterior 1 (a=3+z, b=8+N-z)')
-plot(theta, prior2, type='l')
-title('Prior 2 (a=9, b=2)')
+title('Posterior 1 ')
+
 plot(theta, likelihood, type='l')
-title('Likelihood (z=6, N=9)')
+title('Likelihood')
 plot(theta, posterior2, type='l')
-title('Posterior 2 (a=9+z, b=2+N-z)'
+title('Posterior 2')
 
 
 
