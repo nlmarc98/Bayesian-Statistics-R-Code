@@ -1,0 +1,59 @@
+
+# Optional generic preliminaries:
+graphics.off() # This closes all of R's graphics windows.
+rm(list=ls())
+
+# Required packages for this exercise.
+require(rjags)
+require(coda)
+source("DBDA2E-utilities.R")
+
+
+
+## The distributions that we use here are available in R, but for clarity are made explicit here.
+
+# Bernoulli(z,N | theta)
+bernoulli_pdf <- function(theta, z, N) {
+  # Computes p(z,N|theta) = Bernoulli(theta|z,N)
+  pdf = theta^z * (1 - theta)^(N - z)
+  return(pdf)
+}
+
+# beta(theta | a, b)
+beta_pdf <- function(theta, a, b) {
+  # Computes p(theta|a,b) = beta(theta|a,b)
+  pdf = theta^(a - 1) * (1 - theta)^(b - 1)
+  return(pdf)
+}
+
+# B(a+z, N-z+b) / B(a,b)
+beta_bernoulli_evidence <- function(a, b, N, z) {
+  return( beta( z+a, N-z+b ) / beta( a, b ) ) # not numerically stable
+}
+
+
+######################################
+# Define a range of theta's to compute the probability density for:
+theta = seq(0, 1, by = 0.01)
+
+# Observations: 6 heads out of 9 flips
+z = 8
+N = 12
+
+# Hyperparameters
+a1 = 500
+b1 = a1
+a2 = 2
+b2 = 2
+
+prior1                      = beta_pdf(theta, a = a1, b = b1)
+prior2                      = beta_pdf(theta, a = a2, b = b2)
+
+# Plot the probability density functions
+
+par(mfrow=c(2,3))
+plot(theta, prior1, type='l')
+title('Prior 1')
+plot(theta, prior2, type='l')
+title('Prior 2')
+
