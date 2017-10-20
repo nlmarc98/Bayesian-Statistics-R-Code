@@ -38,7 +38,7 @@ beta_bernoulli_evidence <- function(a, b, N, z) {
 theta = seq(0, 1, by = 0.01)
 
 # Observations: 6 heads out of 9 flips
-z = 8 
+z =8
 k=8
 N = 12
 
@@ -48,8 +48,8 @@ w2=0.75
 
 a1=w1*(k-w1)+1
 b1=(1-w1)*(k-2)+1
-m1=runif(0.5,1)
-m2=runif(0.5,1)
+#m1=runif(0.5,1)
+#m2=runif(0.5,1)
 
 a2=w2*(k-w2)+1
 b2=(1-w2)*(k-2)+1
@@ -67,9 +67,9 @@ plot(theta, prior2, type='l')
 title('Prior 2 ')
 
 
-likelihood=bernoulli_pdf(theta, z = k, N = N)
-posterior1=beta_pdf(theta, a = k + a1, b = N - k + b1) # Easy posterior, because conjugacy
-posterior2=beta_pdf(theta, a = k + a2, b = N - k + b2) # Easy posterior, because conjugacy
+likelihood=bernoulli_pdf(theta, z = z, N = N)
+posterior1=beta_pdf(theta, a = z + a1, b = N - z + b1) # Easy posterior, because conjugacy
+posterior2=beta_pdf(theta, a = z + a2, b = N - z + b2) # Easy posterior, because conjugacy
 
 plot(theta, likelihood, type='l')
 title('Likelihood ')
@@ -80,6 +80,35 @@ plot(theta, likelihood, type='l')
 title('Likelihood')
 plot(theta, posterior2, type='l')
 title('Posterior 2')
+
+## NOW WE DO MODEL COMPARISON
+
+evidence1 = beta_bernoulli_evidence(a1, b1, N, z)
+show(sprintf('Evidence p(D|m_1) = %0.5f', evidence1))
+evidence2 = beta_bernoulli_evidence(a2, b2, N, z)
+show(sprintf('Evidence p(D|m_2) = %0.5f', evidence2))
+
+bayes_factor = evidence1 / evidence2
+show(sprintf('Bayes factor = %0.5f', bayes_factor))
+show(sprintf('>1 : in favor of m1, <1 : in favor of m2'))
+
+# I have no model preference
+prior_model_1 = 0.5
+prior_model_2 = 0.5
+
+prior_odds = prior_model_1 / prior_model_2 # trivially 1.0 here
+
+
+
+
+posterior_odds = bayes_factor * prior_odds # multiply with 1.0 is not very exciting
+
+posterior_model1 = posterior_odds / (1.0 + posterior_odds)
+posterior_model2 = 1 - posterior_model1
+
+show(sprintf('Posterior model 1 p(m_1 | D) = %0.2f', posterior_model1))
+show(sprintf('Posterior model 2 p(m_2 | D) = %0.2f', posterior_model2))
+
 
 
 
