@@ -1,0 +1,86 @@
+
+# Optional generic preliminaries:
+graphics.off() # This closes all of R's graphics windows.
+rm(list=ls())
+
+# Required packages for this exercise.
+require(rjags)
+require(coda)
+source("DBDA2E-utilities.R")
+
+
+
+## The distributions that we use here are available in R, but for clarity are made explicit here.
+
+# Bernoulli(z,N | theta)
+bernoulli_pdf <- function(theta, z, N) {
+  # Computes p(z,N|theta) = Bernoulli(theta|z,N)
+  pdf = theta^z * (1 - theta)^(N - z)
+  return(pdf)
+}
+
+# beta(theta | a, b)
+beta_pdf <- function(theta, a, b) {
+  # Computes p(theta|a,b) = beta(theta|a,b)
+  pdf = theta^(a - 1) * (1 - theta)^(b - 1)
+  return(pdf)
+}
+
+# B(a+z, N-z+b) / B(a,b)
+beta_bernoulli_evidence <- function(a, b, N, z) {
+  return( beta( z+a, N-z+b ) / beta( a, b ) ) # not numerically stable
+}
+
+
+##########################
+
+# Define a range of theta's to compute the probability density for:
+theta = seq(0, 1, by = 0.01)
+
+# Observations: 6 heads out of 9 flips
+z = 8 
+k=8
+N = 12
+
+# Hyperparameters
+w1=0.25
+w2=0.75
+
+a1=w1*(k-w1)+1
+b1=(1-w1)*(k-2)+1
+m1=runif(0.5,1)
+m2=runif(0.5,1)
+
+a2=w2*(k-w2)+1
+b2=(1-w2)*(k-2)+1
+
+
+prior1=beta_pdf(theta, a = a1, b = b1)
+
+prior2=beta_pdf(theta, a = a2, b = b2)
+
+
+par(mfrow=c(2,3))
+plot(theta, prior1, type='l')
+title('Prior 1 (k=8, b=12)')
+plot(theta, prior2, type='l')
+title('Prior 2 (k=8, b=12)')
+
+
+likelihood=bernoulli_pdf(theta, z = k, N = N)
+posterior1=beta_pdf(theta, a = k + a1, b = N - k + b1) # Easy posterior, because conjugacy
+posterior2=beta_pdf(theta, a = k + a2, b = N - k + b2) # Easy posterior, because conjugacy
+
+plot(theta, likelihood, type='l')
+title('Likelihood (z=8, N=12)')
+plot(theta, posterior1, type='l')
+title('Posterior 1 (a=3+z, b=8+N-z)')
+plot(theta, prior2, type='l')
+title('Prior 2 (a=9, b=2)')
+plot(theta, likelihood, type='l')
+title('Likelihood (z=6, N=9)')
+plot(theta, posterior2, type='l')
+title('Posterior 2 (a=9+z, b=2+N-z)'
+
+
+
