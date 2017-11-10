@@ -1,0 +1,34 @@
+N=45
+z=3
+theta=1/6
+
+p_value_bin <- function (z, N, theta){
+  p<-choose(N, z) * theta^z*(1-theta)^(N-z)
+  return (p)
+}
+
+NBinomial <- function (z,N,theta){
+  np<- z/N*p_value_bin(z,N,theta)
+  return(np)
+}
+
+
+pValue<-0
+
+for(z in 1:3){
+ pValue <- pValue+p_value_bin(z,N, theta)}
+
+pValue*2
+
+NBinomial(3, N, theta)*2
+
+
+
+#binom.test(3, 45, 1/6, alternative="two.sided") 
+
+
+###########################
+
+N = 6
+z=5
+theta=0.5
