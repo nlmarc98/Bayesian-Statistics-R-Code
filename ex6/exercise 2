@@ -1,0 +1,121 @@
+#1.1
+N=45
+z=3
+theta=1/6
+
+p_value_bin <- function (z, N, theta){
+  p<-choose(N, z) * theta^z*(1-theta)^(N-z)
+  return (p)
+}
+
+pValue<-0
+
+for(z in 0:45){
+  print(z)
+  print(pValue)
+  pValue <- pValue+p_value_bin(z,N, theta)}
+
+
+# range_Of_z<-0
+# 
+# for (z in 0:45)
+# { pValue <- pValue+p_value_bin(z,N, theta)
+#   if (pValue <0.025){
+#    range_of_z<- (range(z))
+#   }
+# }
+
+#binom.test(3, 45, 1/6, alternative="two.sided") 
+
+
+###########################
+
+#1.2.
+N=45
+z=3
+theta=1/6
+
+
+NBinomial <- function (z,N,theta){
+  np<- z/N*p_value_bin(z,N,theta)
+  return(np)
+}
+
+pValue<-0
+
+for(N in 1:45){
+  print(N)
+  print(pValue)
+  pValue <- pValue+NBinomial(z,N, theta)}
+
+pValue
+
+
+#######################
+
+#2.1.
+
+N=6
+z=5
+theta=0.5
+
+p_value_bin <- function (z, N, theta){
+  p<-choose(N, z) * theta^z*(1-theta)^(N-z)
+  return (p)
+}
+
+pValue<-0
+
+for(z in 0:5){
+  pValue <- pValue+p_value_bin(z,N, theta)}
+
+pValue
+1-pValue
+
+#######################
+
+#2.2.
+
+N=6
+z=5
+theta=0.5
+
+
+NBinomial <- function (z,N,theta){
+  np<- z/N*p_value_bin(z,N,theta)
+  return(np)
+}
+
+pValue<-0
+
+for(N in 1:5){
+  pValue <- pValue+NBinomial(z,N, theta)}
+
+pValue
+1-pValue
+
+#################################
+
+#2.3.
+
+a=1
+b=1
+
+N=6
+z=5
+#theta=0.5
+#theta=seq(0,1, by =0.1)
+theta=seq(0,1, by =0.01)
+
+p_val=1-pbeta(0.5, a+z, N-z+b)
+p_val
+
+###plots
+x=c(1,1,1,1,1,0)
+#because (H,H,H,H,H,U)
+prior_2= dbeta(theta, a,b)
+posterior_2= dbeta(theta, a+z, N-z+b)
+plot(theta, prior_2, type='l')
+plot(theta, posterior_2, type='l')
+
+
