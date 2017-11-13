@@ -43,7 +43,7 @@ NBinomial <- function (z,N,theta){
 
 pValue<-0
 
-for(N in 0:45){
+for(N in 1:45){
   print(N)
   print(pValue)
   pValue <- pValue+NBinomial(z,N, theta)}
