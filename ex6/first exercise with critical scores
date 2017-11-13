@@ -1,0 +1,52 @@
+#1.1
+N=45
+z=3
+theta=1/6
+
+p_value_bin <- function (z, N, theta){
+  p<-choose(N, z) * theta^z*(1-theta)^(N-z)
+  return (p)
+}
+
+pValue<-0
+
+for(z in 0:45){
+  print(z)
+  print(pValue)
+  pValue <- pValue+p_value_bin(z,N, theta)}
+
+
+# range_Of_z<-0
+# 
+# for (z in 0:45)
+# { pValue <- pValue+p_value_bin(z,N, theta)
+#   if (pValue <0.025){
+#    range_of_z<- (range(z))
+#   }
+# }
+
+#binom.test(3, 45, 1/6, alternative="two.sided") 
+
+
+###########################
+
+#1.2.
+N=45
+z=3
+theta=1/6
+
+
+NBinomial <- function (z,N,theta){
+  np<- z/N*p_value_bin(z,N,theta)
+  return(np)
+}
+
+pValue<-0
+
+for(N in 0:45){
+  print(N)
+  print(pValue)
+  pValue <- pValue+NBinomial(z,N, theta)}
+
+pValue
+
