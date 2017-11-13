@@ -93,3 +93,24 @@ for(N in 1:5){
 
 pValue
 1-pValue
+
+#################################
+
+#2.3.
+
+NBinomial <- function (z,N,theta){
+  np<- z/N*p_value_bin(z,N,theta)
+  return(np)
+}
+
+
+p_value_bin <- function (z, N, theta){
+  p<-choose(N, z) * theta^z*(1-theta)^(N-z)
+  return (p)
+}
+
+N=6
+z=5
+theta=0.5
+
+qbeta(0.5, p_value_bin(N, z, theta), NBinomial(N, z, theta), ncp = 0, lower.tail = TRUE, log.p = FALSE)
